@@ -96,8 +96,18 @@ int main()
 	while(1)
 	{
 		cin>>file;
-		//binaryfile(file);
-		hexfile(file);
+		if(file=="exit")
+			break;
+		else if(file=="objdump")
+		{
+			cin>>file;
+			binaryfile(file);
+		}
+		else if(file=="hexdump")
+		{
+			cin>>file;
+			hexfile(file);
+		}
 	}
 	return 0;
 }
