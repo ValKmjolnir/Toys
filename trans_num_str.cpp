@@ -46,7 +46,10 @@ double trans_string_to_number(std::string str)
 		long long int hex_number=0,bit_pow=1;
 		for(int i=str.length()-1;i>1;--i)
 		{
-			hex_number+=bit_pow*(str[i]-'0');
+			if('0'<=str[i] && str[i]<='9')
+				hex_number+=bit_pow*(str[i]-'0');
+			else
+				hex_number+=bit_pow*(10+str[i]-'a');
 			bit_pow<<=4;
 		}
 		trans_str_number=(double)hex_number;
