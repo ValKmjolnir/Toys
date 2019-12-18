@@ -3,6 +3,16 @@
 
 bool check_numerable_string(std::string str)
 {
+	if(str[0]=='-' && str.length()==1)
+		return false;
+	if(str[0]=='-' && str.length()>1)
+	{
+		std::string temp="";
+		int str_len=str.length();
+		for(int i=1;i<str_len;++i)
+			temp+=str[i];
+		str=temp;
+	}
 	if(str.length()==1)
 		return ('0'<=str[0] && str[0]<='9');
 	else if(str[0]=='0' && str[1]=='x')
@@ -25,7 +35,7 @@ bool check_numerable_string(std::string str)
 	{
 		int str_len=str.length();
 		int float_dot_cnt=0;
-		for(int i=0;i<str_len;++i)
+		for(int i=1;i<str_len;++i)
 			if(str[i]=='.')
 				++float_dot_cnt;
 		if(float_dot_cnt>1)
@@ -38,6 +48,16 @@ bool check_numerable_string(std::string str)
 }
 double trans_string_to_number(std::string str)
 {
+	double negative=1;
+	if(str[0]=='-')
+	{
+		negative=-1;
+		int str_len=str.length();
+		std::string temp="";
+		for(int i=0;i<str_len;++i)
+			temp+=str[i];
+		str=temp;
+	}
 	double trans_str_number=0;
 	if(str.length()==1)
 		trans_str_number=(double)(str[0]-'0');
@@ -48,8 +68,10 @@ double trans_string_to_number(std::string str)
 		{
 			if('0'<=str[i] && str[i]<='9')
 				hex_number+=bit_pow*(str[i]-'0');
-			else
+			else if('a'<=str[i] && str[i]<='f')
 				hex_number+=bit_pow*(10+str[i]-'a');
+			else
+				hex_number+=bit_pow*(10+str[i]-'A');
 			bit_pow<<=4;
 		}
 		trans_str_number=(double)hex_number;
@@ -93,6 +115,11 @@ double trans_string_to_number(std::string str)
 std::string trans_number_to_string(double number)
 {
 	std::string trans_num_string="";
+	if(number<0)
+	{
+		trans_num_string+='-';
+		number*=-1;
+	}
 	double integer_bit=1;
 	while(number>=integer_bit)
 		integer_bit*=10;
@@ -115,7 +142,7 @@ std::string trans_number_to_string(double number)
 }
 int main()
 {
-	double a=2147483648.91022341243025;
+	double a=-2147483648.91022341243025;
 	std::cout<<trans_string_to_number(trans_number_to_string(a))<<std::endl;
 	std::cout<<check_numerable_string(trans_number_to_string(a))<<std::endl;
 	return 0;
